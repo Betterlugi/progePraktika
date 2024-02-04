@@ -15,34 +15,45 @@ class GenericSprite(pygame.sprite.Sprite):
             self.image = pygame.transform.scale_by(self.image,kordaja)
             self.rect = self.image.get_rect(center=asukoht)
 
-class Highlight(GenericSprite):
-    def __init__(self,värvA:tuple,asukoht,id):
-        pygame.sprite.Sprite.__init__(self,invisibleHighlightGroup.invisibleHighlight_grupp)
-        super().__init__()
-        surface = pygame.Surface(size=(200,200))
-        surface=pygame.Surface.convert_alpha(surface)
-        surface.fill(värvA,special_flags=pygame.BLEND_RGBA_MULT)
-        self.image = surface
-        self.rect = surface.get_rect(center=asukoht)
-        self.värv = värvA
-        self.id = id
-    def switch(self,bool):
-        if bool:
-            pygame.sprite.Sprite.remove(self,invisibleHighlightGroup.invisibleHighlight_grupp)
-            pygame.sprite.Sprite.add(self,visibleHighlightGroup.visibleHighlight_group)
-        else:
-            pygame.sprite.Sprite.remove(self,visibleHighlightGroup.visibleHighlight_group)
-            pygame.sprite.Sprite.add(self,invisibleHighlightGroup.invisibleHighlight_grupp)
+# class Highlight(GenericSprite):
+#     def __init__(self,värvA:tuple,asukoht,id):
+#         pygame.sprite.Sprite.__init__(self,invisibleHighlightGroup.invisibleHighlight_grupp)
+#         super().__init__()
+#         surface = pygame.Surface(size=(200,200))
+#         surface=pygame.Surface.convert_alpha(surface)
+#         surface.fill(värvA,special_flags=pygame.BLEND_RGBA_MULT)
+#         self.image = surface
+#         self.rect = surface.get_rect(center=asukoht)
+#         self.värv = värvA
+#         self.id = id
+#     def switch(self,bool):
+#         if bool:
+#             pygame.sprite.Sprite.remove(self,invisibleHighlightGroup.invisibleHighlight_grupp)
+#             pygame.sprite.Sprite.add(self,visibleHighlightGroup.visibleHighlight_group)
+#         else:
+#             pygame.sprite.Sprite.remove(self,visibleHighlightGroup.visibleHighlight_group)
+#             pygame.sprite.Sprite.add(self,invisibleHighlightGroup.invisibleHighlight_grupp)
 
 
-class Torn(GenericSprite):
-    def __init__(self,pilt,asukoht,nimi,kordaja = 1):
+class TornUi(GenericSprite):
+    def __init__(self,pilt,asukoht,nimi,kordaja = 1,dragging = 0):
         pygame.sprite.Sprite.__init__(self, tornGroup.torn_grupp)
         super().__init__(pilt,asukoht,kordaja)
-
+        self.pilt = pilt
         self.nimi = nimi.split(".")[0]
-
+        self.dragging = dragging
+        self.mouseInt = 0
     def __str__(self):
         return self.nimi
 
+    def update(self,mouseBool):
+        if self.dragging:
+            pos = pygame.mouse.get_pos()
+            self.rect = pos
+            if mouseBool:
+                self.mouseInt += 1
+                print("klõpsude arv: ",self.mouseInt)
+                if self.mouseInt >= 2:
+                    self.dragging = 0
+                    self.mouseInt = 0
 
