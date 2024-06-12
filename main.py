@@ -4,6 +4,7 @@ import pygame,sprites,uiHaldur,thorpy
 Siin on veel palju palju teha, kõik algelises staadiumis, aga ehk saab miskit aru.
 """""
 pygame.init() #initsialiseerib pygame
+map = pygame.image.load("map2.png")
 screen = pygame.display.set_mode((1280, 720)) #moodustab ekraani
 thorpy.init(screen, thorpy.theme_game2()) #see initsialiseerib ui ekraanile
 running = True #abimuutuja, mis näitab kas mäng jookseb
@@ -26,16 +27,17 @@ uiKast.kast.clamp(alumineKast)# paneb selle ristküliku sisse
 
 while running: #see jookseb nii kaua kuni ei ole pantud quit
     mouseBool = False #abimuutuja, mis näitab, kas hiirt vajutati frame'is
-    screen.fill("purple")#selle ülesanne on ekraani puhastada, värske alus millele saab asju teha (ajutine, hiljem ehk on map)
+    map.blit(screen,(0,0))#selle ülesanne on ekraani puhastada, värske alus millele saab asju teha (ajutine, hiljem ehk on map)
     pos = pygame.mouse.get_pos()#saab hiire positsiooni
     events =pygame.event.get() #saab mängust evendid
     mouse_rel = pygame.mouse.get_rel() #kasutatud .uuenda() poolt, näitab palju hiir om liikunud võrreldes eelmise frame'iga.
     for event in events:# evendihaldur
         if event.type == pygame.QUIT: #kas vajutati aknas risti?
-            running = False#quit
+            running = False #quit
         if event.type == pygame.MOUSEBUTTONDOWN:#kas vajutati hiirt?
-            mouseBool = True#hiirt vajutati
+            mouseBool = True #hiirt vajutati
     uiKast.uuenda() #värskendab ui-d
+
     sprites.visibleHighlightGroup.visibleHighlight_group.draw(screen) #joonistab visibleHighlight grupis kõik sprite'id
     sprites.tornGroup.torn_grupp.update(mouseBool) #värskendab torn grupis kõik tornid, sellega, et kas hiirt vajutati
     sprites.tornGroup.torn_grupp.draw(screen) #joonistab tornid torn grupis ekraanile
