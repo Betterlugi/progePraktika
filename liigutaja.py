@@ -1,10 +1,9 @@
 import pygame
-#terve liikumise põhimõte seisneb selles, et ennemalt liigub vektor, siis liigub takka järgi ka objekt
-def vormistaVektor(suund:float):
+#liigub vektor, siis liigub objekt
+def vormistaVektor(suund:float,asukoht):
     vektor = pygame.math.Vector2() #teeb vektori, kelle koordinaadid on (0;0)
     vektor.rotate_ip_rad(suund) #suund on radiaanides
+    vektor.update(asukoht)
+    return vektor
 
-
-
-def liigutaVektoriSuunas(kiirus:int):
 

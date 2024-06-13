@@ -19,6 +19,7 @@ gladiaatorPilt5 = uiHaldur.TornNupp("gladiaator",1).grupp
 gladiaatorPilt6 = uiHaldur.TornNupp("gladiaator",1).grupp
 gladiaatorPilt7 = uiHaldur.TornNupp("gladiaator",1).grupp #siin teen väga palju ui elemente gladiaatorist
 map1 = map.Map("map2.png",keskel,"map1")
+projektile1 = sprites.Projectile("torn-removebg-preview.png",(50,50),"kuul")
 list =[gladiaatorPilt,gladiaatorPilt2,gladiaatorPilt3,gladiaatorPilt4,gladiaatorPilt5,gladiaatorPilt6,gladiaatorPilt7]
 nx = len(list)
 uiKast = uiHaldur.Kast(list,nx,1,False,1280,180) #moodustab kasti kus paiknevad ui elemendid
@@ -38,10 +39,14 @@ while running: #see jookseb nii kaua kuni ei ole pantud quit
         if event.type == pygame.QUIT: #kas vajutati aknas risti?
             running = False #quit
         if event.type == pygame.MOUSEBUTTONDOWN:#kas vajutati hiirt?
+
             mouseBool = True #hiirt vajutati
+
     uiKast.uuenda() #värskendab ui-d
 
     #sprites.visibleHighlightGroup.visibleHighlight_group.draw(screen) #joonistab visibleHighlight grupis kõik sprite'id #deprecated
+    sprites.grupid.liikuvadAsjad_grupp.draw(screen)
+    sprites.grupid.liikuvadAsjad_grupp.update() #värskendab liikuvate asjade positioonid
     sprites.grupid.torn_grupp.update(mouseBool) #värskendab torn grupis kõik tornid, sellega, et kas hiirt vajutati
     sprites.grupid.torn_grupp.draw(screen) #joonistab tornid torn grupis ekraanile
     pygame.display.update() #värskendab ekraani

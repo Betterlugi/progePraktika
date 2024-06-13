@@ -1,6 +1,7 @@
 import pygame.sprite
 import groups
-#See file hoiab kõik meie sprite classid
+import liigutaja
+#See file hoiab kõik meie üldised sprite klassid
 
 #globaalsed muutujad:
 
@@ -60,4 +61,30 @@ class Torn(GenericSprite):#GenericSprite alamklass, see on praegune torn sprite 
                 if self.mouseInt >= 2: #kui vajutati piisavalt
                     self.dragging = 0#enam pole hiire küljes
                     self.mouseInt = 0
+class Projectile(GenericSprite):
+    def __init__(self,pilt:str,asukoht:tuple,nimi:str,suund= 1,kiirus = 1,kordaja = 1):
+        pygame.sprite.Sprite.__init__(self, grupid.liikuvadAsjad_grupp)
+        super().__init__(pilt,asukoht,nimi,kordaja)
+        #igal projectile'il on kaks vektorit, nii suuna kui ka kiiruse vektor.
+        #Suuna vektor on normaliseeritud pikkusele 1, ja kiiruse vektori pikkus on võrdne kiiruse väärtusega
+        #Suuna vektor eksisteerib, et teha vektori nurga arvutusi. Kiiruse vektor liigutab objekti
 
+        #siin on veel tööd teha
+        self.kiirus = kiirus
+        self.Suunavektor = liigutaja.vormistaVektor(suund,asukoht)
+        self.asukoht = asukoht
+        self.suund = suund
+        #
+        #
+        #
+        #
+        #to be continued
+    def update(self):#selle ülesanne on liigutada objekti vektori suunas
+        kiiruseVektor = liigutaja.vormistaVektor(self.suund,self.asukoht)
+        print(kiiruseVektor)
+        kiiruseVektor.scale_to_length(self.kiirus)
+        (x,y) = self.asukoht
+        x+=kiiruseVektor.x
+        y+=kiiruseVektor.y
+        self.asukoht = (x,y)
+        self.rect = self.asukoht
