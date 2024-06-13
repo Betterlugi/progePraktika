@@ -5,7 +5,7 @@ import sprites
 from groups import *
 
 class Kast(): #see annab lihtsa viisi kuidas moodustada kasti ekraanile, ning, et mis aknas võiks olla
-    def __init__(self,grupid:list,nx:int,ny:int,dynamic=True,W=0,H=0): #nx ja ny ütlevad vastavalt mitu rida ja veergu on ruudustikul, dynamic ütleb kas muudab oma suurust vastavalt elementide arvust või ei
+    def __init__(self,grupid:list,nx:int,ny:int,dynamic=True,W=0,H=0,taustavarv=(0,0,0,0)): #nx ja ny ütlevad vastavalt mitu rida ja veergu on ruudustikul, dynamic ütleb kas muudab oma suurust vastavalt elementide arvust või ei
         self.kast = Box(children=grupid) #ütleb ära mis kasti sees on
         self.kast.sort_children(mode="grid",nx=nx,ny=ny) #paneb kasti sisu ruudustikule alluma, kus on nx ridu ja ny veergu
         if dynamic:
@@ -13,7 +13,7 @@ class Kast(): #see annab lihtsa viisi kuidas moodustada kasti ekraanile, ning, e
         else:
             self.kast.set_size((W,H))#ei muuda
         self.uuendaja = self.kast.get_updater() #kasutatud, et ekraanile kuvada
-        self.kast.set_bck_color((0, 0, 0)) #taustavärv
+        self.kast.set_bck_color(taustavarv) #taustavärv
 
     def uuenda(self): #kasutada seda def et  uunedada kasti
         self.uuendaja.update()
@@ -23,7 +23,7 @@ class Kast(): #see annab lihtsa viisi kuidas moodustada kasti ekraanile, ning, e
 class TornNupp(): #valmistehtud torni ostunupp
     def __init__(self,spriteName:str,kordaja:int, **kwargs): #võtab sisse sprite nime ning mitu korda nuppu suuredada/vähendada
 
-        for i in sprites.tornGroup.torn_grupp.sprites(): #otsib ülesse sprite antud nimega
+        for i in sprites.grupid.torn_grupp.sprites(): #otsib ülesse sprite antud nimega
             if i.nimi == spriteName:
                 surface = i.image #saab sprite'ist surface
                 self.sprite = i
@@ -56,7 +56,7 @@ class TornNupp(): #valmistehtud torni ostunupp
         abivaartus = True
         pos = pygame.mouse.get_pos()
         nimi = "uiDragGladiaator" #eriline nimi, et ei tekiks palju neid
-        for i in  sprites.genericGroup.generic_grupp.sprites(): #vaatab kas seda juba olemas
+        for i in  sprites.grupid.generic_grupp.sprites(): #vaatab kas seda juba olemas
             if i.nimi == nimi: #kui on juba olemas sellise nimega Torn Sprite siis
                 abivaartus = False
                 if i.dragging == 0: #ei ole enam hiire küljes
