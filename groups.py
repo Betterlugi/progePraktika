@@ -28,4 +28,6 @@ class grupid():
 
         self.liikuvadAsjad_grupp = pygame.sprite.Group() #siin elavad kõik asjad, mis on liikumas (kasutab hiljem pausimise jaoks)
 
+        self.barbar_grupp = pygame.sprite.Group()
+
 
