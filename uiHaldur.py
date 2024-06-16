@@ -66,7 +66,7 @@ class TornNupp(): #valmistehtud torni ostunupp
             sprite = sprites.Torn(self.sprite.pilt,pos,nimi,dragging=1) #teeb uue sprite, mis on hiire küljes
 
 
-#
+
 
 
 

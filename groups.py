@@ -10,7 +10,7 @@ kasutada seda peab niimoodi: lisad grupid klassi uue grupi, ja kutsud selle grup
 class grupid():
     def __init__(self):
 
-        #self.invisibleHighlight_grupp = pygame.sprite.Group() #deprecated
+        #self.nahtamatu_grupp = pygame.sprite.Group()
 
         self.torn_grupp = pygame.sprite.Group() #hoiab endis kõik tornid
 
@@ -19,6 +19,12 @@ class grupid():
         #self.visibleHighlight_group = pygame.sprite.Group() #deprecated
 
         self.kaardi_grupp = pygame.sprite.Group() #siin elavad mapid
+
+        self.tee_grupp = pygame.sprite.Group() #siin elavad mapi tee tervikuna
+
+        self.teeAlam_grupp = pygame.sprite.Group() #siin elavad mapi tee osakestena
+
+        self.vastased_grupp = pygame.sprite.Group() #siin elavad vastased
 
         self.liikuvadAsjad_grupp = pygame.sprite.Group() #siin elavad kõik asjad, mis on liikumas (kasutab hiljem pausimise jaoks)
 

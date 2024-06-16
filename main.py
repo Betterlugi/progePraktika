@@ -1,4 +1,4 @@
-import pygame,sprites,uiHaldur,thorpy,map
+import pygame,sprites,uiHaldur,thorpy,map, tee, vastane
 
 """""
 Siin on veel palju palju teha, kõik algelises staadiumis, aga ehk saab miskit aru.
@@ -19,7 +19,14 @@ gladiaatorPilt5 = uiHaldur.TornNupp("gladiaator",1).grupp
 gladiaatorPilt6 = uiHaldur.TornNupp("gladiaator",1).grupp
 gladiaatorPilt7 = uiHaldur.TornNupp("gladiaator",1).grupp #siin teen väga palju ui elemente gladiaatorist
 map1 = map.Map("map2.png",keskel,"map1")
-projektile1 = sprites.Projectile("torn-removebg-preview.png",(50,50),"kuul")
+tee1 = tee.Tee("map_tee.png",keskel,"tee1")
+tee1.initsaliseeriKoikTahtis()
+for i in tee1.teeOsad:
+    if i.nimi == "algus":
+        testRekt = i.rect
+        (x,y) = testRekt.x,testRekt.y
+vastane1 = sprites.Vastane("torn-removebg-preview.png",(x,y),"vastane",100)
+#projektile1 = sprites.Projectile("torn-removebg-preview.png",(50,50),"kuul")
 list =[gladiaatorPilt,gladiaatorPilt2,gladiaatorPilt3,gladiaatorPilt4,gladiaatorPilt5,gladiaatorPilt6,gladiaatorPilt7]
 nx = len(list)
 uiKast = uiHaldur.Kast(list,nx,1,False,1280,180) #moodustab kasti kus paiknevad ui elemendid
@@ -32,6 +39,7 @@ while running: #see jookseb nii kaua kuni ei ole pantud quit
     mouseBool = False #abimuutuja, mis näitab, kas hiirt vajutati frame'is
     screen.fill("purple")#selle ülesanne on ekraani puhastada, värske alus millele saab asju teha
     sprites.grupid.kaardi_grupp.draw(screen)#joonistab mapi
+
     pos = pygame.mouse.get_pos()#saab hiire positsiooni
     events =pygame.event.get() #saab mängust evendid
     mouse_rel = pygame.mouse.get_rel() #kasutatud .uuenda() poolt, näitab palju hiir om liikunud võrreldes eelmise frame'iga.
@@ -49,5 +57,22 @@ while running: #see jookseb nii kaua kuni ei ole pantud quit
     sprites.grupid.liikuvadAsjad_grupp.update() #värskendab liikuvate asjade positioonid
     sprites.grupid.torn_grupp.update(mouseBool) #värskendab torn grupis kõik tornid, sellega, et kas hiirt vajutati
     sprites.grupid.torn_grupp.draw(screen) #joonistab tornid torn grupis ekraanile
+    for i in tee1.indeksDikt.items():
+        (indeks,muu) = i
+        if len(muu) == 2:
+            if muu[1] == "tee":
+                sub = screen.subsurface(muu[0])
+                sub.fill("blue")
+            if muu[1] == "lopp":
+                sub = screen.subsurface(muu[0])
+                sub.fill("red")
+            if muu[1] == "algus":
+                sub = screen.subsurface(muu[0])
+                sub.fill("purple")
+            if muu[1] == "keeramine":
+                sub = screen.subsurface(muu[0])
+                sub.fill("green")
+
+
     pygame.display.update() #värskendab ekraani
 pygame.quit()#lahkub mängust

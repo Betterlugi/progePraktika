@@ -6,4 +6,4 @@ def vormistaVektor(suund:float,asukoht):
     vektor.update(asukoht)
     return vektor
 
-
+#def keera(objekt):
