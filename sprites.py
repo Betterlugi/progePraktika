@@ -89,7 +89,7 @@ class Projectile(GenericSprite):
         self.asukoht = (x,y)
         self.rect = self.asukoht
 class Vastane(Projectile): #jah, kõik vastased on tehniliselt projektilid. Miks mitte?
-    def __init__(self,pilt:str,asukoht:tuple,nimi:str,elud,kiirus = 1,aktiivne = 1,kordaja = 1):
+    def __init__(self, pilt: str, asukoht: tuple, nimi: str, elud: object, kiirus: object = 1, aktiivne: object = 1, kordaja: object = 1) -> object:
         pygame.sprite.Sprite.__init__(self, grupid.vastased_grupp)
         super().__init__(pilt, asukoht,nimi,kordaja)
         self.nimi = nimi

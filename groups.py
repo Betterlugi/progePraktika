@@ -28,4 +28,24 @@ class grupid():
 
         self.liikuvadAsjad_grupp = pygame.sprite.Group() #siin elavad kõik asjad, mis on liikumas (kasutab hiljem pausimise jaoks)
 
+        self.barbar_grupp = pygame.sprite.Group()
 
+        self.ryygaBarbar_grupp = pygame.sprite.Group()
+
+        self.ratsanikBarbar_grupp = pygame.sprite.Group()
+
+        self.kilbigaBarbar_grupp = pygame.sprite.Group()
+
+        self.lendavadDraakonid_grupp = pygame.sprite.Group()
+
+        self.kykloop_grupp = pygame.sprite.Group()
+
+        self.gladiaator_grupp = pygame.sprite.Group()
+
+        self.vibuMees_grupp = pygame.sprite.Group()
+
+        self.leegionar_grupp = pygame.sprite.Group()
+
+        self.ballista_grupp = pygame.sprite.Group()
+
+        self.odaViskaja_grupp = pygame.sprite.Group()
