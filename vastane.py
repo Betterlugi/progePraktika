@@ -11,7 +11,7 @@ class Barbar(Vastane):
         self.aktiivne = aktiivne
 class Ryyga_Barbar(Vastane):
     def __init__(self,pilt:str,asukoht:tuple,nimi:str,elud = 300,kiirus = 1,aktiivne = 1,kordaja = 1):
-        pygame.sprite.Sprite.__init__(self, grupid.ryygaBarbar_grupparbar_grupp)
+        pygame.sprite.Sprite.__init__(self, grupid.ryygaBarbar_grupp)
         super().__init__(pilt, asukoht,nimi,kordaja)
         self.nimi = nimi
         self.elud = elud

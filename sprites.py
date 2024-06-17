@@ -62,7 +62,7 @@ class Torn(GenericSprite):#GenericSprite alamklass, see on praegune torn sprite 
                     self.dragging = 0#enam pole hiire küljes
                     self.mouseInt = 0
 class Projectile(GenericSprite):
-    def __init__(self,pilt:str,asukoht:tuple,nimi:str,suund= 1,kiirus = 1,kordaja = 1):
+    def __init__(self,pilt:str,asukoht:tuple,nimi:str,kraad= 123,kiirus = 1,kordaja = 1):
         pygame.sprite.Sprite.__init__(self, grupid.liikuvadAsjad_grupp)
         super().__init__(pilt,asukoht,nimi,kordaja)
         #igal projectile'il on kaks vektorit, nii suuna kui ka kiiruse vektor.
@@ -71,28 +71,46 @@ class Projectile(GenericSprite):
 
         #siin on veel tööd teha
         self.kiirus = kiirus
-        self.Suunavektor = liigutaja.vormistaVektor(suund,asukoht)
+        self.suunaVektor = pygame.Vector2(asukoht)
+        if self.suunaVektor.length() > 0:
+            self.suunaVektor.normalize_ip()
+            self.suunaVektor.rotate_ip(kraad)
+        self.kiiruseVektor = pygame.Vector2(asukoht)
+        if self.kiiruseVektor.length() > 0:
+            self.kiiruseVektor.scale_to_length(kiirus)
+            self.kiiruseVektor.rotate_ip(kraad)
         self.asukoht = asukoht
-        self.suund = suund
+        self.suund = kraad
         #
         #
         #
         #
         #to be continued
     def update(self):#selle ülesanne on liigutada objekti vektori suunas
-        kiiruseVektor = liigutaja.vormistaVektor(self.suund,self.asukoht)
-        print(kiiruseVektor)
-        kiiruseVektor.scale_to_length(self.kiirus)
-        (x,y) = self.asukoht
-        x+=kiiruseVektor.x
-        y+=kiiruseVektor.y
-        self.asukoht = (x,y)
+        (x, y) = self.asukoht
+        self.uuendaVektorid()
+        x += self.kiiruseVektor[0]
+        y += self.kiiruseVektor[1]
+        self.asukoht = (x, y)
         self.rect = self.asukoht
+    def uuendaVektorid(self):
+        kraad = self.kiiruseVektor.angle_to(self.suunaVektor)
+        self.kiiruseVektor.rotate_ip(kraad)
+
 class Vastane(Projectile): #jah, kõik vastased on tehniliselt projektilid. Miks mitte?
-    def __init__(self, pilt: str, asukoht: tuple, nimi: str, elud: object, kiirus: object = 1, aktiivne: object = 1, kordaja: object = 1) -> object:
+    def __init__(self, pilt: str, asukoht: tuple, nimi: str, elud, kiirus = 1, aktiivne = 1, kordaja= 1):
         pygame.sprite.Sprite.__init__(self, grupid.vastased_grupp)
         super().__init__(pilt, asukoht,nimi,kordaja)
         self.nimi = nimi
         self.elud = elud
         self.kiirus = kiirus
         self.aktiivne = aktiivne
+
+    def update(self):#selle ülesanne on liigutada objekti vektori suunas
+        if self.aktiivne > 0:
+            (x, y) = self.asukoht
+            self.uuendaVektorid()
+            x += self.kiiruseVektor[0]
+            y += self.kiiruseVektor[1]
+            self.asukoht = (x, y)
+            self.rect = self.image.get_rect(topleft=self.asukoht)

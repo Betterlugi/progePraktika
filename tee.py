@@ -10,43 +10,50 @@ class Tee(GenericSprite):
         self.indeksDikt = {}
         self.teeOsad = []
 
+
     def initsialiseeriKeeramispunktid(self, surface):
-        keeramispunktid = self.kaiUleRuudud(surface)
+        keeramispunktid = [((6,4),(0,1)),
+                           ((6,9),(1,0)),
+                           ((10,9),(0,-1)),
+                           ((10,6),(1,0)),
+                           ((13,6),(0,1)),
+                           ((13,11),(1,0)),
+                           ((18,11),(0,-1)),
+                           ((18,8),(1,0)),
+                           ((25,8),(0,-1)),
+                           ((25,4),(1,0))]
         for indeks in keeramispunktid:
-            self.indeksDikt[indeks].append("keeramine")
-        korvuti = self.rektidTeeKorval(keeramispunktid)
-        vektorid = self.teeVektoridKorvutiolevatestRektidest(korvuti)
-        for i,x in zip(vektorid,korvuti):
-            self.indeksDikt[x[0]].append(i)
-        print(self.indeksDikt)
+            self.indeksDikt[indeks[0]].append("keeramine")
+            self.indeksDikt[indeks[0]].append(indeks[1])
+
     def initsialiseeriAlguspuntkid(self,surface):
-        alguspunktideIndeksid = self.kaiUleRuudud(surface)
+        alguspunktideIndeksid = [((0,4),(1,0))]
         for indeks in alguspunktideIndeksid:
-            self.indeksDikt[indeks].append("algus")
-        korvuti = self.rektidTeeKorval(alguspunktideIndeksid)
-        vektorid = self.teeVektoridKorvutiolevatestRektidest(korvuti)
-        for i,x in zip(vektorid,korvuti):
-            self.indeksDikt[x[0]].append(i)
+            self.indeksDikt[indeks[0]].append("algus")
+            self.indeksDikt[indeks[0]].append(indeks[1])
     def initsialiseeriLopupunktid(self,surface):
-        lopupunktid = self.kaiUleRuudud(surface)
+        lopupunktid = [(29,4)]
         for indeks in lopupunktid:
             self.indeksDikt[indeks].append("lopp")
     def initsialiseeriTee(self,surface):
-        teepunktid = self.kaiUleRuudud(surface)
+        teepunktid = [(1,4),(2,4),(3,4),(4,4),(5,4),(6,5),(6,6),(6,7),(6,8),(7,9),(8,9),(9,9),(10,8),(10,7),(11,6),(12,6),(13,7),(13,8),(13,9),(13,10),(14,11),(15,11),(16,11),(17,11),(18,10),(18,9),(19,8),(20,8),(21,8),(22,8),(23,8),(24,8),(25,7),(25,6),(25,5),(26,4),(27,4),(28,4)]
         for indeks in teepunktid:
             self.indeksDikt[indeks].append("tee")
     def jaotaRuutudeks(self):
         # CHUNKS
         indeksX = 0
-        NrX = 1280//64
-        NrY = 720//64
+        NrX = 1920//64
+        NrY = 1080//64
         for x in range(NrX):
             rektX = x*64
             indeksY = 0
             for y in range(NrY):
                 rektY = y*64
                 indeks = (indeksX,indeksY)
-                rekt = pygame.Rect((rektX,rektY,64,64))
+                if indeksX < 29:
+                    rekt = pygame.Rect((rektX+30,rektY+16,64,64))
+                else:
+                    rekt = pygame.Rect((rektX+30,rektY+16,32,64))
                 self.indeksDikt[indeks] = [rekt]
                 indeksY+=1
             indeksX += 1
@@ -64,13 +71,13 @@ class Tee(GenericSprite):
         pikslid.close()
         return vastavadIndeksid
     def otsiVarvid(self, pikslid, pilt):
-        roheline = pilt.map_rgb((0,255,51)) #võtab rgb väärtuse ja teeb sellest int. Vajalik, sest PixelArray tagastab int piksli värviväärtuseks
+        roheline = pilt.map_rgb((170,255,3)) #võtab rgb väärtuse ja teeb sellest int. Vajalik, sest PixelArray tagastab int piksli värviväärtuseks
         sisaldabRohelist = pikslid.extract(roheline).make_surface() #tagastab must valge surface, kus vastavad värvid on valged ja mittevastavad on mustad
-        sinine = pilt.map_rgb((0, 4, 255))
+        sinine = pilt.map_rgb((27, 168, 240))
         sisaldabSinist = pikslid.extract(sinine).make_surface()
-        lilla = pilt.map_rgb((144, 0, 255))
+        lilla = pilt.map_rgb((161, 31, 241))
         sisaldabLillat = pikslid.extract(lilla).make_surface()
-        punane = pilt.map_rgb((255, 0, 42))
+        punane = pilt.map_rgb((255, 0, 0))
         sisaldabPunast = pikslid.extract(punane).make_surface()
         return (sisaldabRohelist,sisaldabSinist,sisaldabLillat,sisaldabPunast)
     def rektidTeeKorval(self,indeksid1):
@@ -108,7 +115,10 @@ class Tee(GenericSprite):
                     vektor = muu[2]
                     teeOsa = TeeOsa(rekt,nimi,indeks,vektor)
                 else:
-                    teeOsa = TeeOsa(rekt,nimi,indeks)
+                    if nimi == "lopp":
+                        teeOsa = TeeOsa(rekt,nimi,indeks)
+                        grupid.teeLopp_grupp.add(teeOsa)
+                    teeOsa = TeeOsa(rekt, nimi, indeks)
                 self.teeOsad.append(teeOsa)
     def teeVektoridKorvutiolevatestRektidest(self,korvuti):
         vektorid = []
@@ -133,11 +143,12 @@ class Tee(GenericSprite):
         self.initsialiseeriLopupunktid(sisaldabPunast)
         self.initsialiseeriKeeramispunktid(sisaldabRohelist)
         self.teeAlamKlassid()
+
 class TeeOsa(pygame.sprite.Sprite):
     def __init__(self,asukoht:tuple, nimi:str,indeks:tuple, vektor = 0):
         pygame.sprite.Sprite.__init__(self,grupid.teeAlam_grupp)
         self.nimi= nimi
-        self.rect = asukoht
+        self.rect = pygame.Rect(asukoht)
         self.vektor = vektor
         self.indeks = indeks
 

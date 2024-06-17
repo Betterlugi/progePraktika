@@ -21,12 +21,19 @@ class Kast(): #see annab lihtsa viisi kuidas moodustada kasti ekraanile, ning, e
 
 #algeline
 class TornNupp(): #valmistehtud torni ostunupp
-    def __init__(self,spriteName:str,kordaja:int, **kwargs): #võtab sisse sprite nime ning mitu korda nuppu suuredada/vähendada
+    def __init__(self,spriteName:str,kordaja:int): #võtab sisse sprite nime ning mitu korda nuppu suuredada/vähendada
 
         for i in sprites.grupid.torn_grupp.sprites(): #otsib ülesse sprite antud nimega
             if i.nimi == spriteName:
                 surface = i.image #saab sprite'ist surface
                 self.sprite = i
+                self.hind = i.hind
+                self.damage = i.damage
+                self.ROF = i.ROF
+                self.pierce = i.pierce
+                self.melee = i.melee
+                self.ranged = i.ranged
+                self.range = i.range
                 break
 
         self.name = spriteName
@@ -48,6 +55,7 @@ class TornNupp(): #valmistehtud torni ostunupp
 
     def hover(self):
         self.highlight.set_invisible(0) #teeb highlight nähtavaks
+
 
     def unhover(self):
         self.highlight.set_invisible(1) #teeb highlight nähtamatuks

@@ -49,3 +49,7 @@ class grupid():
         self.ballista_grupp = pygame.sprite.Group()
 
         self.odaViskaja_grupp = pygame.sprite.Group()
+
+        self.rajalVastased_grupp = pygame.sprite.Group()
+
+        self.teeLopp_grupp = pygame.sprite.Group()
