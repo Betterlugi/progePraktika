@@ -58,7 +58,7 @@ class Torn(GenericSprite):#GenericSprite alamklass, see on praegune torn sprite 
             if mouseBool: #kui hiirt vajutati
                 self.mouseInt += 1
                 print("klõpsude arv: ",self.mouseInt)
-                if self.mouseInt >= 2: #kui vajutati piisavalt
+                if self.mouseInt >= 1: #kui vajutati piisavalt
                     self.dragging = 0#enam pole hiire küljes
                     self.mouseInt = 0
 class Projectile(GenericSprite):
@@ -100,11 +100,18 @@ class Projectile(GenericSprite):
 class Vastane(Projectile): #jah, kõik vastased on tehniliselt projektilid. Miks mitte?
     def __init__(self, pilt: str, asukoht: tuple, nimi: str, elud, kiirus = 1, aktiivne = 1, kordaja= 1):
         pygame.sprite.Sprite.__init__(self, grupid.vastased_grupp)
-        super().__init__(pilt, asukoht,nimi,kordaja)
+        super().__init__(pilt, asukoht,nimi,kiirus,kordaja)
         self.nimi = nimi
         self.elud = elud
         self.kiirus = kiirus
         self.aktiivne = aktiivne
+        if self.suunaVektor.length() > 0:
+            self.suunaVektor.normalize_ip()
+            self.suunaVektor.rotate_ip(0)
+        self.kiiruseVektor = pygame.Vector2(asukoht)
+        if self.kiiruseVektor.length() > 0:
+            self.kiiruseVektor.scale_to_length(kiirus)
+            self.kiiruseVektor.rotate_ip(0)
 
     def update(self):#selle ülesanne on liigutada objekti vektori suunas
         if self.aktiivne > 0:

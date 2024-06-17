@@ -39,8 +39,8 @@ class Wave():
         wave = self.getWave()
         for i in wave:
             (name,arv) = i
-            for i in grupid.vastased_grupp.sprites():
-                if i.nimi == name:
+            for i in ["Barbar","Ryyga_Barbar","Ratsanik_Barbar","Kilbiga_Barbar","Lendavad_Draakonid","Kykloop"]:
+                if i == name:
                     if name == "Barbar":
                         uus = vastane.Barbar("ryyta_barbar.png",(0,1),"Barbar")
 
@@ -59,8 +59,6 @@ class Wave():
                     if name == "Kykloop":
                         uus = vastane.Kykloop("kyklops.png",(0,1),"Kykloop")
 
-
-                    sprites.grupid.rajalVastased_grupp.add(uus)
                     for x in range(arv):
                         self.sprites.append(uus)
 
